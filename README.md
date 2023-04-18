@@ -1,3 +1,4 @@
 # share-img-optimize
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/slidev-4nltqj)
+[Preview](https://share-img-optimize.vercel.app/1)
+[Deploy](https://vercel.com/greatauk/share-img-optimize)
