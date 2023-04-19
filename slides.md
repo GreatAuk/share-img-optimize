@@ -25,22 +25,26 @@ css: unocss
 
 # 图片优化最佳实践
 
-Presentation slides for developers
+Optimally loading images
 
 <div class="pt-12">
   <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
+    在现代 HTML 中， img 标签为我们提供了许多有用的属性来优化加载图像。让我们来看看它们 <carbon:arrow-right class="inline"/>
   </span>
 </div>
 
-<div class="abs-br m-6 flex gap-2">
+<div class="abs-bl m-6 flex gap-2">
   <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
     <carbon:edit />
   </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
+  <a href="https://github.com/GreatAuk/share-img-optimize" target="_blank" alt="GitHub"
     class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
     <carbon-logo-github />
   </a>
+</div>
+<div v-click class="abs-br m-6 flex item-center">
+  吴展华
+  <img src="https://avatars.githubusercontent.com/u/20253809?s=40&v=4" class="w-6 h-6 rounded-full ml-2" />
 </div>
 
 <!--
