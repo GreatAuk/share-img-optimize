@@ -23,7 +23,7 @@ drawings:
 css: unocss
 ---
 
-# Welcome to Slidev
+# 图片优化最佳实践
 
 Presentation slides for developers
 
