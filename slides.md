@@ -53,6 +53,40 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
+# 图片类型的选取
+
+![](https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304191829084.png)
+
+<!-- <div v-click class="abs-br bg-black">
+  - Alpha 通道：图片是否支持透明的特性
+  - 动画：很好理解，图片是否支持多帧率动态图片，类似于 GIF
+  - 编解码性能：图像的解码与编码。这个很关键，很多人对待图片容易忽视图片的编解码性能，解码图像主要从图像文件中读出图像数据，而编码则是将图像数据写入图像文件。解码与编码的过程正好相反。而这两者的性能耗时会影响我们页面的的展示性能。
+  - 压缩算法：该图片格式是否支持压缩，支持的话，图片的压缩又会分为无损压缩与有损压缩
+</div> -->
+
+---
+
+# 更简单的方法
+* [unpic-img](https://github.com/ascorbic/unpic-img)
+* [Nuxt Image](https://image.nuxtjs.org/)
+* [Next Image](https://nextjs.org/docs/api-reference/next/image)
+* [Qwik Image](https://github.com/BuilderIO/qwik/pull/2860) (在路上了)
+---
+
+# 结论
+
+<div>
+  尽可能的使用 img 而不是 CSS background-image。
+</div>
+<div v-click>
+  使用延迟加载、 srcset 、 picture 标签和我们上面讨论的其他优化以最佳方式传送图像。
+</div>
+<div v-click>
+  与低优先级图像相比，请注意高优先级图像并相应地调整您的属性。
+</div>
+
+---
+
 # What is Slidev?
 
 Slidev is a slides maker and presenter designed for developers, consist of the following features
