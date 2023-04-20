@@ -89,11 +89,14 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
-# 如何使用 img 代替 background-image ？
+# 如何使用 img 代替 background-image （初版)
 <div> HTML </div>
 ```html
 <div class="container">
-  <img src="/image.png">
+  <picture class="bg-image">
+    <source type="image/webp" ...>
+    <img ...>
+  </picture>
   <h1>我是背景上面的内容</h1>
 </div>
 ```
@@ -113,14 +116,14 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 
 <div v-click class="my-3">
-  <div class="font-bold mb-2">使用这么多额外的 HTML 是否会影响性能？</div>
+  <div class="font-500 mb-2">使用这么多额外的 HTML 是否会影响性能？</div>
   <div>
     别忘记图像有多大（以字节为单位）。通过加载更优化的版本，向 HTML 添加几个字节可以为这些图像节省数千甚至数百万字节。
   </div>
 </div>
 
 <div v-click>
-  <div class="font-bold mb-2">何时考虑 background-image?</div>
+  <div class="font-500 mb-2">何时考虑 background-image?</div>
   如果你有一个非常小的图像，你想用 background-repeat 平铺，没有一种简单的方法可以用 img 标签完成这种效果。
 </div>
 
@@ -130,6 +133,41 @@ layout: center
 
 # 在现代 HTML 中， img 标签为我们提供了许多有用的属性来优化加载图像。让我们来看看它们。
 
+---
+
+# 图片格式的选取
+
+![](https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304191829084.png)
+
+---
+
+## 图片格式总结
+<div class="my-6 font-500">
+  兼容性: WebP > AVIF > JPEG XL
+</div>
+
+<div>JPEG XL、AVIF、Web 各自有各自的特点与优势，并且都未完全得到任何浏览器的支持。影响它们大规模使用的依旧是兼容问题。</div>
+
+<div v-click class="mt-6">
+  <div>相关：</div>
+  <a href="https://www.bilibili.com/read/cv22543150?from=articleDetail" target="__blank">2023-03 bilibili-AVIF图片格式落地</a>
+</div>
+
+---
+
+## 使用 picture 标签实现优雅降级
+采用 HTML picture 标签提供若干 source 元素，并让浏览器根据其支持的图片格式自动选择对应的 URL：优先请求 AVIF 格式；如果浏览器不支持，则降级到 WebP；对于极少数不支持 WebP 的浏览器，则进一步降级到 JPG/PNG 格式。
+
+```html
+<picture>
+  <!-- 可能是一些对兼容性有要求的，但是性能表现更好的现代图片格式-->
+  <source src="image.avif" type="image/avif">
+  <source src="image.webp" type="image/webp">
+
+   <!-- 最终的兜底方案-->
+  <img src="image.jpg" type="image/jpeg">
+</picture>
+```
 ---
 
 # 原生的 lazy-loading
@@ -146,7 +184,7 @@ layout: center
     <img class="w-1/2" src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304192327685.png">
     <div class="w=1/2">
       <img src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304192333221.png">
-      <a class="mt-3 ml-4" src="https://github.com/element-plus/element-plus/blob/19e3164e6af2e5a781019e94608f6a662a1950c1/packages/components/image/src/image.vue#L148-L187">Element Plus 的 image 组件兼容方式</a>
+      <a class="mt-3 ml-4" href="https://github.com/element-plus/element-plus/blob/19e3164e6af2e5a781019e94608f6a662a1950c1/packages/components/image/src/image.vue#L148-L187" target="__blank">Element Plus 的 image 组件兼容方式</a>
     </div>
   </div>
 </div>
@@ -154,8 +192,8 @@ layout: center
 <div v-click>
   <div class="my-2 font-500">js 实现延迟加载</div>
 
-  1. 通过 onscroll 事件与 `getBoundingClientRect` API 实现图片的懒加载方案
-  2. 通过 Intersection Observer（交叉观察器）实现比监听 onscroll 性能更佳的图片懒加载方案
+  1. 通过 onscroll 事件与 getBoundingClientRect API 实现图片的懒加载方案
+  2. 通过 Intersection Observer 实现比监听 onscroll 性能更佳的图片懒加载方案
 </div>
 
 ---
@@ -177,11 +215,11 @@ layout: center
 
 </v-click>
 
-<div v-click class="mt-4">这是一个渐进增强方案使用, 不用考虑兼容性。</div>
+<div v-click class="mt-4">这是一个渐进增强方案, 不用考虑兼容性。</div>
 
 ---
 
-# Resource hints
+# 下载优先级
 
 <div>
   一个更高级的选项是 fetchpriority 。向浏览器提示图像是否具有超高优先级，例如您的 LCP 图像。
@@ -191,7 +229,9 @@ layout: center
 <img fetchpriority="high" ...>
 ```
 
-或者，降低图像的优先级，例如，如果您的图像位于首屏但重要性不高，例如在轮播的其他页面上：
+<v-click>
+
+或者，降低图像的优先级，如果你的图像位于首屏但重要性不高，如轮播图的非首张：
 
 ```html
 <div class="carousel">
@@ -201,25 +241,157 @@ layout: center
 </div>
 ```
 
----
-
-# 图片格式的选取
-
-![](https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304191829084.png)
+</v-click>
 
 ---
 
-# 图片格式总结
-<div class="my-6 font-500">
-  兼容性: WebP > AVIF > JPEG XL
+# 避免布局偏移
+
+<div v-show="$slidev.nav.clicks < 1">
+  <div>如果没有在下载图像之前指定图像的精确大小，则在加载图像时可能会发生布局偏移。</div>
+  <div>布局偏移可能会分散用户的注意力。想象一下，您已经开始阅读一篇文章，可是页面上的文字突然位移（可能上面有的图片加载完成），让你措手不及。</div>
+  <img class="w-1/2 mt-4" src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304201633015.png" >
 </div>
 
-<div>JPEG XL、AVIF、Web 各自有各自的特点与优势，并且都未完全得到任何浏览器的支持. 影响它们大规模使用的依旧是兼容问题。</div>
 
-<div v-click class="mt-6">
-  <div>相关：</div>
-  <a src="https://www.bilibili.com/read/cv22543150?from=articleDetail" target="__blank">2023-03 bilibili-AVIF图片格式落地</a>
+<div v-click v-show="$slidev.nav.clicks === 1">
+  方法一：指定 width 和 height 属性。或只设置 width, 在 css 中设置 height 设置为 auto， 以便图像在屏幕尺寸变化时正确响应：
+
+  ```html
+  <img
+    width="150"
+    height="100"
+    style="height: auto"
+  >
+  ```
+
 </div>
+
+<v-click>
+
+  方法二：也可以只使用 CSS 中较新的 aspect-ratio 属性来始终自动获得正确的纵横比。使用此选项，你无需知道图像的确切宽度和高度，只需知道其纵横比即可：
+
+  ```html
+  <img style="aspect-ratio: 5 / 3; width: 100%">
+  ```
+
+  <div v-click class="my-2">
+
+  > aspect-ratio 不仅仅只是能运用在这里。在 aspect-ratio 出现之前，我们只能通过一些其它的 Hack 方式，譬如设置 padding-top 等方式模拟固定的宽高比。在 aspect-ratio 之后，我们终于有了设定容器固定宽高比的能力。
+
+  </div>
+
+  <div class="my-2">
+
+  > aspect-ratio 也与 object-fit 和 object-position 搭配得很好，它们分别与背景图像的 background-size 和 background-position 非常相似。
+
+  </div>
+
+  ```css
+    .my-image {
+      aspect-ratio: 5 / 3;
+      width: 100%;
+      /* Fill the available space, even if the image has a different intrinsic aspect ratio */
+      object-fit: cover;
+    }
+  ```
+</v-click>
+
+---
+
+# 为不同 DPR，不同尺寸的屏幕选择最佳尺寸的图片
+
+<div v-click>
+  第一步，用 srcset 属性列出所有可用的图像。通过定义多个不同宽度的图像源，让浏览器在 HTML 解析期间选择最合适的图像源
+
+  ```html
+  <img
+    src="photo.png"
+    srcset="photo@1x.png 300w,    <!-- 宽度描述符就是图像原始的宽度，加上字符w -->
+            photo@2x.png 600w,
+            photo@3x.png 1200w"
+  >
+  ```
+</div>
+
+<div v-click class="mt-2">
+  第二步，sizes属性列出不同设备的图像显示宽度。
+
+  ```html
+  <img
+    sizes="(min-width: 600px) 600px,
+          300px"
+    src="photo.png"
+    srcset="photo@1x.png 300w,
+            photo@2x.png 600w,
+            photo@3x.png 1200w"
+  >
+  ```
+</div>
+
+<div v-click class="mt-2">
+  第三步，浏览器根据当前设备的宽度，从sizes属性获得图像的显示宽度，然后从srcset属性找出最接近该宽度的图像，进行加载。
+</div>
+
+---
+
+## 浏览器怎么确定当前场景要选取哪张图片呢？[Demo](https://codepen.io/Chokcoco/pen/WNeZvOX?editors=1100)
+
+<div class="mt-6" v-show="$slidev.nav.clicks < 1">
+
+  ##### **当前屏幕 dpr = 2 ，CSS 宽度为 375px**。
+
+  当前屏幕 CSS 宽度为 375px，则图片 CSS 宽度为 300px。分别用上述 3 个宽度描述符的数值除以 300。
+
+  1. 300 / 300 = 1
+  2. 600 / 300 = 2
+  3. 1200 / 300 = 4
+
+  上面计算得到的 1、 2、 4 即是算出的有效的像素密度，换算成和 x 描述符等价的值 。这里 600w 算出的 2 即满足 dpr = 2 的情况，选择此张图。
+
+</div>
+<div class="mt-6" v-click v-show="$slidev.nav.clicks === 1">
+
+  ##### **当前屏幕 dpr = 3 ，CSS 宽度为 414px**。
+
+  当前屏幕 CSS 宽度为 414px，则图片 CSS 宽度仍为 300px。再计算一次：
+
+  1. 300 / 300 = 1
+  2. 600 / 300 = 2
+  3. 1200 / 300 = 4
+
+  因为 dpr = 3，2 已经不满足了，则此时会选择 1200w 这张图。
+</div>
+
+<div class="mt-6" v-click v-show="$slidev.nav.clicks === 2">
+
+  ##### **当前屏幕 dpr = 1 ，CSS 宽度为 1920px**。
+
+  当前屏幕 CSS 宽度为 1920px，则图片 CSS 宽度变为了 600px。再计算一次：
+
+  1. 300 / 600 = .5
+  2. 600 / 600 = 1
+  3. 1200 / 600 = 2
+
+  因为 dpr = 1，所以此时会选择 600w 对应的图片。
+
+</div>
+
+<div class="abs-br">
+
+  ```html
+  <img
+    sizes="(min-width: 600px) 600px,
+          300px"
+    src="photo.png"
+    srcset="photo@1x.png 300w,
+            photo@2x.png 600w,
+            photo@3x.png 1200w"
+  >
+  ```
+
+</div>
+
 ---
 
 # 图片的异常处理
