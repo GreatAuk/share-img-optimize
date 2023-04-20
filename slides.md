@@ -1,6 +1,6 @@
 ---
 # try also 'default' to start simple
-theme: seriph
+theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
 background: https://source.unsplash.com/collection/94734566/1920x1080
@@ -25,12 +25,11 @@ css: unocss
 
 # 图片优化最佳实践
 
-Optimally loading images
-
+图片优化对于网站的性能和加载速度至关重要。优化图片可以减少网站的加载时间，提高用户体验，减少对用户的等待时间，降低网站的跳出率。此外，优化图片还可以减少带宽消耗，节省服务器资源，降低运维成本。
 <div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
+  <div @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
     在现代 HTML 中， img 标签为我们提供了许多有用的属性来优化加载图像。让我们来看看它们 <carbon:arrow-right class="inline"/>
-  </span>
+  </div>
 </div>
 
 <div class="abs-bl m-6 flex gap-2">
@@ -42,9 +41,15 @@ Optimally loading images
     <carbon-logo-github />
   </a>
 </div>
-<div v-click class="abs-br m-6 flex item-center">
+<div
+  v-click
+  class="abs-br m-6 flex item-center text-3xl"
+  v-motion
+  :initial="{ x: -80 }"
+  :enter="{ x: 0 }"
+>
   吴展华
-  <img src="https://avatars.githubusercontent.com/u/20253809?s=40&v=4" class="w-6 h-6 rounded-full ml-2" />
+  <img src="https://avatars.githubusercontent.com/u/20253809?s=40&v=4" class="w-9 h-9 rounded-full ml-2" />
 </div>
 
 <!--
@@ -53,16 +58,206 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
-# 图片类型的选取
+# 一个案例
+<div>
+  你有一个漂亮的页面，你需要加一个背景图，你会怎么做？
+</div>
+<v-click>
+```css
+.hero {
+  /* 🚩 */
+  background-image: url('/image.png');
+}
+```
+</v-click>
+<div v-click>
+  <div>很常规的操作，但这样写有哪些缺点？</div>
+  <div>知道有哪些优化方式？</div>
+</div>
+
+---
+
+# background-image 的缺点
+<div v-show="$slidev.nav.clicks < 2">
+  1. 链式请求的问题
+  <img class="my-4" src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202302261104351.jpeg" />
+  <div class="text-gray">
+    在 CSS 中加载图像的情况下，假设您使用外部样式表（link rel=”styleshset” ，多数情况是这样的，而不是随处内联 style ），浏览器必须扫描您的 HTML，获取 CSS，然后找到一个 background-image 应用于一个元素，只有在所有这些之后才能获取该图像。这将需要更长的时间。
+  </div>
+  <div class="mt-4" v-click>2. 无法使用 img 标签的额外优势。比如说 lazy loading、格式兼容、分辨率适配等等。</div>
+</div>
+
+---
+
+# 如何使用 img 代替 background-image ？
+<div> HTML </div>
+```html
+<div class="container">
+  <img src="/image.png">
+  <h1>我是背景上面的内容</h1>
+</div>
+```
+<v-click>
+<div class="mt-4"> CSS </div>
+
+```css
+  .container { position: relative; }
+  .bg-image { position: absolute; inset: 0; }
+  .bg-image img { width: 100%; height: 100%; object-fit: cover; }
+```
+
+<div class="text-gray text-xs">
+  注意，这里只是解决了链式请求的问题，并没有使用到 img 的其他优化手段。
+</div>
+</v-click>
+
+
+<div v-click class="my-3">
+  <div class="font-bold mb-2">使用这么多额外的 HTML 是否会影响性能？</div>
+  <div>
+    别忘记图像有多大（以字节为单位）。通过加载更优化的版本，向 HTML 添加几个字节可以为这些图像节省数千甚至数百万字节。
+  </div>
+</div>
+
+<div v-click>
+  <div class="font-bold mb-2">何时考虑 background-image?</div>
+  如果你有一个非常小的图像，你想用 background-repeat 平铺，没有一种简单的方法可以用 img 标签完成这种效果。
+</div>
+
+---
+layout: center
+---
+
+# 在现代 HTML 中， img 标签为我们提供了许多有用的属性来优化加载图像。让我们来看看它们。
+
+---
+
+# 原生的 lazy-loading
+
+延迟加载图像，直到它和视口接近到一个计算得到的距离（由浏览器定义）
+
+```html
+<img loading="lazy">
+```
+注意！！！第一次加载时立即出现在浏览器视口中的图片，不要延迟加载。这将有助于确保最关键的图像尽快加载，而所有其他图像仅在需要时加载
+<div class="my-2" v-click>
+  <div class="my-2 font-500">兼容问题</div>
+  <div class="flex items-center">
+    <img class="w-1/2" src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304192327685.png">
+    <div class="w=1/2">
+      <img src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304192333221.png">
+      <a class="mt-3 ml-4" src="https://github.com/element-plus/element-plus/blob/19e3164e6af2e5a781019e94608f6a662a1950c1/packages/components/image/src/image.vue#L148-L187">Element Plus 的 image 组件兼容方式</a>
+    </div>
+  </div>
+</div>
+
+<div v-click>
+  <div class="my-2 font-500">js 实现延迟加载</div>
+
+  1. 通过 onscroll 事件与 `getBoundingClientRect` API 实现图片的懒加载方案
+  2. 通过 Intersection Observer（交叉观察器）实现比监听 onscroll 性能更佳的图片懒加载方案
+</div>
+
+---
+
+# 异步图像解码
+浏览器在进行图片渲染展示的过程中，是需要对图片文件进行解码的，这一个过程快慢与图片格式有关。
+而如果我们不希望图片的渲染解码影响页面的其他内容的展示，可以使用 decoding=async 选项
+
+```html
+<img decoding="async" ... >
+```
+这样，浏览器便会异步解码图像，加快显示其他内容。
+<v-click>
+
+它的可选取值如下：
+- sync: 同步解码图像，保证与其他内容一起显示。
+- async: 异步解码图像，加快显示其他内容。
+- auto: 默认模式，表示不偏好解码模式。由浏览器决定哪种方式更适合用户
+
+</v-click>
+
+<div v-click class="mt-4">这是一个渐进增强方案使用, 不用考虑兼容性。</div>
+
+---
+
+# Resource hints
+
+<div>
+  一个更高级的选项是 fetchpriority 。向浏览器提示图像是否具有超高优先级，例如您的 LCP 图像。
+</div>
+
+```html
+<img fetchpriority="high" ...>
+```
+
+或者，降低图像的优先级，例如，如果您的图像位于首屏但重要性不高，例如在轮播的其他页面上：
+
+```html
+<div class="carousel">
+  <img class="slide-1" fetchpriority="high">
+  <img class="slide-2" fetchpriority="low">
+  <img class="slide-3" fetchpriority="low">
+</div>
+```
+
+---
+
+# 图片格式的选取
 
 ![](https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304191829084.png)
 
-<!-- <div v-click class="abs-br bg-black">
-  - Alpha 通道：图片是否支持透明的特性
-  - 动画：很好理解，图片是否支持多帧率动态图片，类似于 GIF
-  - 编解码性能：图像的解码与编码。这个很关键，很多人对待图片容易忽视图片的编解码性能，解码图像主要从图像文件中读出图像数据，而编码则是将图像数据写入图像文件。解码与编码的过程正好相反。而这两者的性能耗时会影响我们页面的的展示性能。
-  - 压缩算法：该图片格式是否支持压缩，支持的话，图片的压缩又会分为无损压缩与有损压缩
-</div> -->
+---
+
+# 图片格式总结
+<div class="my-6 font-500">
+  兼容性: WebP > AVIF > JPEG XL
+</div>
+
+<div>JPEG XL、AVIF、Web 各自有各自的特点与优势，并且都未完全得到任何浏览器的支持. 影响它们大规模使用的依旧是兼容问题。</div>
+
+<div v-click class="mt-6">
+  <div>相关：</div>
+  <a src="https://www.bilibili.com/read/cv22543150?from=articleDetail" target="__blank">2023-03 bilibili-AVIF图片格式落地</a>
+</div>
+---
+
+# 图片的异常处理
+
+当图片链接挂了，加载失败了，我们比较好的处理方式应该是怎么样呢？
+
+处理的方式有很多种。在张鑫旭的这篇文章中 -- **[图片加载失败后CSS样式处理最佳实践](https://www.zhangxinxu.com/wordpress/2020/10/css-style-image-load-fail/)** 有一个不错的实践。
+
+<div v-show="$slidev.nav.clicks < 1">
+
+核心思路为：
+1. 利用图片加载失败，触发 `<img>` 元素的 `onerror` 事件，给加载失败的 `<img>` 元素新增一个样式类
+2. 利用新增的样式类，配合 `<img>` 元素的伪元素，在展示默认兜底图的同时，还能一起展示 `<img>` 元素的 `alt` 信息
+
+```css
+<img src="test.png" alt="Alt Info" onerror="this.classList.add('error');">
+img.error {
+    position: relative;
+    display: inline-block;
+}
+img.error::before {
+    content: "";
+    background: url(error-default.png);
+}
+img.error::after {
+    content: attr(alt);
+}
+```
+
+</div>
+
+<div v-click>
+
+  我们利用伪元素 before ，加载默认错误兜底图，利用伪元素 after，展示图片的 alt 信息：
+
+  ![图片](https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304200006644.png)
+
+</div>
 
 ---
 
