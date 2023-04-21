@@ -419,6 +419,18 @@ layout: center
 
 ---
 
+# 大图使用 placeholder 渐进加载 [Demo](https://element-plus.run/#eyJBcHAudnVlIjoiPHRlbXBsYXRlPlxuICA8ZGl2IGNsYXNzPVwiZGVtby1pbWFnZV9fcGxhY2Vob2xkZXJcIj5cbiAgICA8ZGl2IGNsYXNzPVwiYmxvY2tcIj5cbiAgICAgIDxzcGFuIGNsYXNzPVwiZGVtb25zdHJhdGlvblwiPkN1c3RvbTwvc3Bhbj5cbiAgICAgIDxlbC1pbWFnZSBzdHlsZT1cIndpZHRoOiAyMDBweFwiIDpzcmM9XCJgJHtzcmN9P3I9JHtyYW5kb219YFwiPlxuICAgICAgICA8dGVtcGxhdGUgI3BsYWNlaG9sZGVyPlxuICAgICAgICAgIDxlbC1pbWFnZSBzdHlsZT1cIndpZHRoOiAyMDBweFwiIDpzcmM9XCJgJHtzcmN9P3gtb3NzLXByb2Nlc3M9aW1hZ2UvYmx1cixyXzUwLHNfNTAvcXVhbGl0eSxxXzEvcmVzaXplLG1fbWZpdCxoXzIwMCx3XzIwMGBcIiAvPlxuICAgICAgICA8L3RlbXBsYXRlPlxuICAgICAgPC9lbC1pbWFnZT5cbiAgICAgIDxlbC1idXR0b24gQGNsaWNrPVwicmVsb2FkXCI+cmVsb2FkPC9lbC1idXR0b24+XG4gICAgPC9kaXY+XG4gIDwvZGl2PlxuPC90ZW1wbGF0ZT5cblxuPHNjcmlwdCBsYW5nPVwidHNcIiBzZXR1cD5cbmltcG9ydCB7IHJlZiB9IGZyb20gJ3Z1ZSdcbmNvbnN0IHNyYyA9ICdodHRwczovL3pvcy5hbGlwYXlvYmplY3RzLmNvbS9ybXNwb3J0YWwvamtqZ2tFZnZwVVBWeVJqVUltbmlWc2xaZldQbkp1dVoucG5nJ1xuXG5jb25zdCByYW5kb20gPSByZWYoTWF0aC5yYW5kb20oKSlcblxuY29uc3QgcmVsb2FkID0gKCkgPT4ge1xuICByYW5kb20udmFsdWUgPSBNYXRoLnJhbmRvbSgpXG59XG48L3NjcmlwdD5cblxuPHN0eWxlIHNjb3BlZD5cbi5kZW1vLWltYWdlX19wbGFjZWhvbGRlciAuYmxvY2sge1xuICBwYWRkaW5nOiAzMHB4IDA7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggdmFyKC0tZWwtYm9yZGVyLWNvbG9yKTtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICB3aWR0aDogNDklO1xuICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICB2ZXJ0aWNhbC1hbGlnbjogdG9wO1xufVxuLmRlbW8taW1hZ2VfX3BsYWNlaG9sZGVyIC5kZW1vbnN0cmF0aW9uIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIGNvbG9yOiB2YXIoLS1lbC10ZXh0LWNvbG9yLXNlY29uZGFyeSk7XG4gIGZvbnQtc2l6ZTogMTRweDtcbiAgbWFyZ2luLWJvdHRvbTogMjBweDtcbn1cbi5kZW1vLWltYWdlX19wbGFjZWhvbGRlciAuZWwtaW1hZ2Uge1xuICBwYWRkaW5nOiAwIDVweDtcbiAgbWF4LXdpZHRoOiAzMDBweDtcbiAgbWF4LWhlaWdodDogMjAwcHg7XG59XG5cbi5kZW1vLWltYWdlX19wbGFjZWhvbGRlci5pbWFnZS1zbG90IHtcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG4gIGJhY2tncm91bmQ6IHZhcigtLWVsLWZpbGwtY29sb3ItbGlnaHQpO1xuICBjb2xvcjogdmFyKC0tZWwtdGV4dC1jb2xvci1zZWNvbmRhcnkpO1xuICBmb250LXNpemU6IDE0cHg7XG59XG4uZGVtby1pbWFnZV9fcGxhY2Vob2xkZXIgLmRvdCB7XG4gIGFuaW1hdGlvbjogZG90IDJzIGluZmluaXRlIHN0ZXBzKDMsIHN0YXJ0KTtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn1cbjwvc3R5bGU+XG4iLCJpbXBvcnRfbWFwLmpzb24iOiJ7XG4gIFwiaW1wb3J0c1wiOiB7fVxufSIsIl9vIjp7fX0=)
+
+```vue {all|2-4|all}
+<el-image src="avatar.png">
+  <template #placeholder>
+    <el-image src="avatar.png?x-oss-process=image/blur,r_50,s_50/quality,q_1/resize,m_mfit,h_200,w_200" />
+  </template>
+</el-image>
+```
+
+---
+
 # 图片的异常处理
 
 当图片链接挂了，加载失败了，我们比较好的处理方式应该是怎么样呢？
@@ -471,6 +483,20 @@ img.error::after {
 
 ---
 
+## Element Plus Image 的异常处理
+
+```vue {all|2-4|all}
+<el-image>
+  <template #error>
+    <div> oops, 图片加载错误</div>
+  </template>
+</el-image>
+```
+
+<img class="mt-4 w-2/3" v-click src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202304211316841.png" />
+
+---
+
 # 如何使用 img 代替 background-image
 <div> HTML </div>
 ```html
@@ -519,7 +545,9 @@ img.error::after {
 * 设置图片的 aspect-ratio，避免布局偏移。
 * fetchpriority 属性控制图片的下载优先级。
 * 图片加载失败时，显示错误兜底图片。
+* 大图片使用 placeholder 渐进加载。
 * 设置图片的 alt、aria-label、aria-labelledby 属性，提升图片的可访问性。
+* 图片上传到 CDN 服务器。
 * 尽可能的使用 img 而不是 CSS background-image。
 
 </v-clicks>
