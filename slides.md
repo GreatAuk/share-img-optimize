@@ -82,9 +82,9 @@ The last comment block of each slide will be treated as slide notes. It will be 
 <div v-show="$slidev.nav.clicks < 2">
   1. 链式请求的问题
   <img class="my-4" src="https://utopia1994.oss-cn-shanghai.aliyuncs.com/img-bed/202302261104351.jpeg" />
-  <div class="text-gray">
-    在 CSS 中加载图像的情况下，假设您使用外部样式表（link rel=”styleshset” ，多数情况是这样的，而不是随处内联 style ），浏览器必须扫描您的 HTML，获取 CSS，然后找到一个 background-image 应用于一个元素，只有在所有这些之后才能获取该图像。这将需要更长的时间。
-  </div>
+
+  > 在 CSS 中加载图像的情况下，假设您使用外部样式表（link rel=”styleshset” ，多数情况是这样的，而不是随处内联 style ），浏览器必须扫描您的 HTML，获取 CSS，然后找到一个 background-image 应用于一个元素，只有在所有这些之后才能获取该图像。这将需要更长的时间。
+
   <div class="mt-4" v-click>
     2. 无法使用 img 标签的额外优势。比如说 lazy loading、格式兼容、分辨率适配等等。
   </div>
@@ -471,32 +471,6 @@ img.error::after {
 
 ---
 
-# 更简单的方法
-<v-clicks>
-
-* [unpic-img](https://github.com/ascorbic/unpic-img)
-* [Nuxt Image](https://image.nuxtjs.org/)
-* [Next Image](https://nextjs.org/docs/api-reference/next/image)
-* [Qwik Image](https://github.com/BuilderIO/qwik/pull/2860) (在路上了)
-
-</v-clicks>
-
----
-
-# 结论
-
-<div>
-  尽可能的使用 img 而不是 CSS background-image。
-</div>
-<div v-click>
-  使用延迟加载、 srcset 、 picture 标签和我们上面讨论的其他优化以最佳方式传送图像。
-</div>
-<div v-click>
-  与低优先级图像相比，请注意高优先级图像并相应地调整您的属性。
-</div>
-
----
-
 # 如何使用 img 代替 background-image
 <div> HTML </div>
 ```html
@@ -509,7 +483,7 @@ img.error::after {
 </div>
 ```
 <v-click>
-<div class="mt-4"> CSS </div>
+<div class="mt-3"> CSS </div>
 
 ```css
   .container { position: relative; }
@@ -520,7 +494,7 @@ img.error::after {
 </v-click>
 
 
-<div v-click class="my-3">
+<div v-click class="my-2">
   <div class="font-500 mb-2">使用这么多额外的 HTML 是否会影响性能？</div>
   <div>
     别忘记图像有多大（以字节为单位）。通过加载更优化的版本，向 HTML 添加几个字节可以为这些图像节省数千甚至数百万字节。
@@ -529,5 +503,35 @@ img.error::after {
 
 <div v-click>
   <div class="font-500 mb-2">何时考虑 background-image?</div>
-  如果你有一个非常小的图像，你想用 background-repeat 平铺，没有一种简单的方法可以用 img 标签完成这种效果。
+  如果你有一个小图片，你想用 background-repeat 平铺。如果使用 img, 没有简单的方法能实现类似效果。
 </div>
+
+---
+
+# 总结
+
+<v-clicks>
+
+* picture 实现图片格式的优雅降级。
+* loading="lazy" 实现图片的延迟加载。
+* srcset & sizes 实现图片的响应式。
+* decoding="async" 实现图片的异步解码。
+* 设置图片的 aspect-ratio，避免布局偏移。
+* fetchpriority 属性控制图片的下载优先级。
+* 图片加载失败时，显示错误兜底图片。
+* 设置图片的 alt、aria-label、aria-labelledby 属性，提升图片的可访问性。
+* 尽可能的使用 img 而不是 CSS background-image。
+
+</v-clicks>
+
+---
+
+# 更简单的方法
+<v-clicks>
+
+* [unpic-img](https://github.com/ascorbic/unpic-img)
+* [Nuxt Image](https://image.nuxtjs.org/)
+* [Next Image](https://nextjs.org/docs/api-reference/next/image)
+* [Qwik Image](https://github.com/BuilderIO/qwik/pull/2860) (在路上了)
+
+</v-clicks>
